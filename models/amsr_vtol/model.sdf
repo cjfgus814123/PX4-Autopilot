@@ -3,7 +3,7 @@
   <model name='amsr_vtol'>
     <pose>0 0 0.5 0 0 0</pose>
     <link name='base_link'>
-      <pose>0.3363 0 0.0584 0 0 3.14159</pose>
+      <pose>-0.3363 0 0.0584 0 0 0</pose>
       <inertial>
         <pose>-0 0 0 0 0 3.14159</pose>
         <mass>6.971</mass>
@@ -39,6 +39,7 @@
           </friction>
         </surface>
       </collision>
+      
       <visual name='base_link_visual'>
         <pose>-0.3363 0 -0.0584 0 0 3.14159</pose>
         <geometry>
@@ -150,6 +151,9 @@
         </air_pressure>
       </sensor>
       
+      <!-- magnetometer + navsat removed: provided by PX4 SENS_EN_MAGSIM / SENS_EN_GPSSIM -->
+    
+    
       <sensor name="magnetometer_sensor" type="magnetometer">
         <gz_frame_id>base_link</gz_frame_id>
         <always_on>1</always_on>
@@ -185,7 +189,7 @@
     
     <include merge="true">
       <uri>model://airspeed</uri>
-      <pose>0.5 0. 0. 0. 0. 3.14159</pose>
+      <pose>-0.01 0. 0.01 0. 0. 3.14159</pose>
     </include>
     <joint name='airspeed_joint' type='fixed'>
       <parent>base_link</parent>
@@ -193,8 +197,87 @@
       <pose relative_to="base_link">-0 0 0 0 0 0</pose>
     </joint>
     
+    <link name="left_skid_link">
+      <pose>-0.3 0.2 -0.15 0 0 0</pose> 
+      <inertial>
+        <mass>0.1</mass> <inertia>
+          <ixx>0.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.0001</iyy> <iyz>0</iyz> <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      
+      <collision name="left_skid_collision">
+        <geometry>
+          <box><size>0.3 0.02 0.02</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+6</kp> <kd>1e+2</kd> </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu> <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      
+      <visual name="left_skid_visual">
+        <geometry>
+          <box><size>0.3 0.02 0.02</size></box>
+        </geometry>
+        <material><ambient>0 0 0 1</ambient></material>
+      </visual>
+    </link>
+
+    <joint name="left_skid_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>left_skid_link</child>
+    </joint>
+    
+    <link name="right_skid_link">
+      <pose>-0.3 -0.2 -0.15 0 0 0</pose> 
+      <inertial>
+        <mass>0.1</mass> <inertia>
+          <ixx>0.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.0001</iyy> <iyz>0</iyz> <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      
+      <collision name="right_skid_collision">
+        <geometry>
+          <box><size>0.3 0.02 0.02</size></box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+6</kp> <kd>1e+2</kd> </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu> <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      
+      <visual name="right_skid_visual">
+        <geometry>
+          <box><size>0.3 0.02 0.02</size></box>
+        </geometry>
+        <material><ambient>0 0 0 1</ambient></material>
+      </visual>
+    </link>
+
+    <joint name="right_skid_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>right_skid_link</child>
+    </joint>
+    
+    
     <link name='rotor_0'>
-      <pose>0.0119 -0.502 0.0964 0 0 3.14159</pose>
+      <pose>-0.0119 0.502 0.0964 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.019</mass>
@@ -258,7 +341,7 @@
     </joint>
     
     <link name='rotor_1'>
-      <pose>0.6608 0.502 0.0231 0 0 3.14159</pose>
+      <pose>-0.6608 -0.502 0.0231 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.019</mass>
@@ -323,7 +406,7 @@
     </joint>
     
     <link name='rotor_2'>
-      <pose>0.0119 0.502 0.0964 0 0 3.14159</pose>
+      <pose>-0.0119 -0.502 0.0964 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.019</mass>
@@ -388,7 +471,7 @@
     </joint>
     
     <link name='rotor_3'>
-      <pose>0.6608 -0.502 -0.0231 0 0 3.14159</pose>
+      <pose>-0.6608 0.502 -0.0231 0 0 0</pose>
       <inertial>
         <pose>0 0 0.0431 0 0 0</pose>
         <mass>0.019</mass>
@@ -453,7 +536,7 @@
     </joint>
 
     <link name='rotor_puller'>
-      <pose>0.714 0 0.0564 0 0 3.14159</pose>
+      <pose>-0.714 0 0.0564 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.019</mass>
@@ -515,7 +598,7 @@
     </joint>
     
     <link name="left_aileron">
-      <pose>0.483 -0.824 0.1058 0 0 3.14159</pose>
+      <pose>-0.483 0.824 0.1058 0 0 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -544,7 +627,7 @@
     </link>
     
     <link name="right_aileron">
-      <pose>0.483 0.824 0.1058 0 0 3.14159</pose>
+      <pose>-0.483 -0.824 0.1058 0 0 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -573,7 +656,7 @@
     </link>
         
     <link name="left_rudder">
-      <pose>0.84 -0.3403 0.164 1.047 0 3.14159</pose> 
+      <pose>-0.84 0.3403 0.164 1.047 0 0</pose> 
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -602,7 +685,7 @@
     </link>
     
     <link name="right_rudder">
-      <pose>0.84 0.3403 0.164 -1.047 0 3.14159</pose> 
+      <pose>-0.84 -0.3403 0.164 -1.047 0 0</pose> 
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -715,20 +798,20 @@
     </joint>
     
     <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
-      <a0>-0.0918</a0>
+      <a0>0.06</a0>
       <cla>5.8</cla>
       <cda>0.0127</cda>
-      <alpha_stall>0.21</alpha_stall>
-      <cla_stall>-3.5</cla_stall>
+      <alpha_stall>0.34</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
       <cda_stall>1.0</cda_stall>
       <cma>0.0</cma>
       <cma_stall>0</cma_stall>
 
       <cp>-0.0463 0.500 0.02</cp>
       
-      <area>0.2</area>
+      <area>0.5</area>
       <air_density>1.2041</air_density>
-      <forward>-1 0 0</forward>
+      <forward>1 0 0</forward>
       <upward>0 0 1</upward>
       <link_name>base_link</link_name>
       <control_joint_name>left_aileron_joint</control_joint_name>
@@ -736,20 +819,20 @@
     </plugin>
     
     <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
-      <a0>-0.0918</a0>
+      <a0>0.06</a0>
       <cla>5.8</cla>
       <cda>0.0127</cda>
-      <alpha_stall>0.21</alpha_stall>
-      <cla_stall>-3.5</cla_stall>
+      <alpha_stall>0.34</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
       <cda_stall>1.0</cda_stall>
       <cma>0.0</cma>
       <cma_stall>0</cma_stall>
 
       <cp>-0.0463 -0.500 0.02</cp>
 
-      <area>0.2</area>
+      <area>0.5</area>
       <air_density>1.2041</air_density>
-      <forward>-1 0 0</forward>
+      <forward>1 0 0</forward>
       <upward>0 0 1</upward>
       <link_name>base_link</link_name>
       <control_joint_name>right_aileron_joint</control_joint_name>
@@ -760,42 +843,42 @@
       <a0>0.0</a0>
       <cla>4.5</cla>
       <cda>0.0127</cda>
-      <alpha_stall>0.21</alpha_stall>
-      <cla_stall>-3.5</cla_stall>
+      <alpha_stall>0.34</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
       <cda_stall>1.0</cda_stall>
       <cma>0.0</cma>
       <cma_stall>0</cma_stall>
 
       <cp>-0.6265 0.200 0.16</cp>
 
-      <area>0.05</area>
+      <area>0.18</area>
       <air_density>1.2041</air_density>
-      <forward>-1 0 0</forward>
+      <forward>1 0 0</forward>
       <upward>0 1 1</upward>
       <link_name>base_link</link_name>
       <control_joint_name>left_rudder_joint</control_joint_name>
-      <control_joint_rad_to_cl>-1.0</control_joint_rad_to_cl>
+      <control_joint_rad_to_cl>-2.5</control_joint_rad_to_cl>
     </plugin>
 
     <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
       <a0>0.0</a0>
       <cla>4.5</cla>
       <cda>0.0127</cda>
-      <alpha_stall>0.21</alpha_stall>
-      <cla_stall>-3.5</cla_stall>
+      <alpha_stall>0.34</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
       <cda_stall>1.0</cda_stall>
       <cma>0.0</cma>
       <cma_stall>0</cma_stall>
 
       <cp>-0.6265 -0.200 0.16</cp>
 
-      <area>0.05</area>
+      <area>0.18</area>
       <air_density>1.2041</air_density>
-      <forward>-1 0 0</forward>
+      <forward>1 0 0</forward>
       <upward>0 -1 1</upward>
       <link_name>base_link</link_name>
       <control_joint_name>right_rudder_joint</control_joint_name>
-      <control_joint_rad_to_cl>-1.0</control_joint_rad_to_cl>
+      <control_joint_rad_to_cl>-2.5</control_joint_rad_to_cl>
     </plugin>
     
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
@@ -907,7 +990,7 @@
     
     <include merge='true'>
       <uri>model://mono_cam</uri>
-      <pose>0.4305 0 -0.05 3.14159 1.5708 0</pose>
+      <pose>-0.1 0 -0.03 3.14159 1.5708 0</pose>
       <name>mono_cam</name>
     </include>
 
@@ -915,7 +998,157 @@
       <parent>base_link</parent>
       <child>camera_link</child>
     </joint>
-  
+    
+        <link name="gripper_body">
+      <pose>-0.382 0 -0.04 0 0 0</pose>
+      <inertial>
+        <mass>0.6</mass>
+        <inertia><ixx>0.002</ixx><ixy>0</ixy><ixz>0</ixz><iyy>0.001</iyy><iyz>0</iyz><izz>0.001</izz></inertia>
+      </inertial>
+      
+      <visual name="gripper_body_visual">
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://amsr_vtol/meshes/Gripper_body.stl</uri>
+          </mesh>
+        </geometry>
+        <material><ambient>0.15 0.15 0.18 1</ambient><diffuse>0.2 0.2 0.24 1</diffuse></material>
+      </visual>
+
+      <collision name="gripper_body_collision">
+        <geometry><box><size>0.12 0.12 0.02</size></box></geometry>
+      </collision>
+    </link>
+
+    <joint name="gripper_z_rotation_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>gripper_body</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>-3.1415</lower><upper>3.1415</upper><effort>10.0</effort><velocity>2.0</velocity></limit>
+      </axis>
+    </joint>
+
+    <link name="left_hand_link">
+      <pose relative_to="gripper_body">0 0.06 -0.01 0 0 0</pose> <inertial>
+        <mass>0.1</mass>
+        <inertia><ixx>2e-4</ixx><ixy>0</ixy><ixz>0</ixz><iyy>2e-4</iyy><iyz>0</iyz><izz>2e-4</izz></inertia>
+      </inertial>
+      
+      <visual name="gripper_hand1_visual">
+        <pose>0.03 0 0 0 0 0</pose> 
+        <geometry><mesh><scale>0.001 0.001 0.001</scale><uri>model://amsr_vtol/meshes/gripper_hand2.stl</uri></mesh></geometry>
+        <material><ambient>0.6 0.6 0.62 1</ambient><diffuse>0.7 0.7 0.72 1</diffuse></material>
+      </visual>
+      
+      <visual name="gripper_hand2_visual">
+        <pose>-0.03 0 0 0 0 0</pose> 
+        <geometry><mesh><scale>0.001 0.001 0.001</scale><uri>model://amsr_vtol/meshes/gripper_hand3.stl</uri></mesh></geometry>
+        <material><ambient>0.6 0.6 0.62 1</ambient><diffuse>0.7 0.7 0.72 1</diffuse></material>
+      </visual>
+
+      <collision name="left_hand_collision_arm1">
+        <pose>0.03 0.02 -0.04 -0.4 0 0</pose> 
+        <geometry><box><size>0.02 0.01 0.06</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="left_hand_collision_arm2">
+        <pose>-0.03 0.02 -0.04 -0.4 0 0</pose> 
+        <geometry><box><size>0.02 0.01 0.06</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="left_hand_collision_leg1">
+        <pose>0.03 -0.01 -0.075 0 0 0</pose> 
+        <geometry><box><size>0.02 0.04 0.01</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="left_hand_collision_leg2">
+        <pose>-0.03 -0.01 -0.075 0 0 0</pose> 
+        <geometry><box><size>0.02 0.04 0.01</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+    </link>
+
+    <joint name="left_hand_joint" type="revolute">
+      <parent>gripper_body</parent>
+      <child>left_hand_link</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit><lower>-1.57</lower><upper>1.57</upper><effort>5.0</effort><velocity>1.5</velocity></limit>
+      </axis>
+    </joint>
+
+
+    <link name="right_hand_link">
+      <pose relative_to="gripper_body">0 -0.06 -0.01 0 0 0</pose> <inertial>
+        <mass>0.1</mass>
+        <inertia><ixx>2e-4</ixx><ixy>0</ixy><ixz>0</ixz><iyy>2e-4</iyy><iyz>0</iyz><izz>2e-4</izz></inertia>
+      </inertial>
+      
+      <visual name="gripper_hand3_visual">
+        <pose>0.03 0 0 0 0 0</pose> 
+        <geometry><mesh><scale>0.001 0.001 0.001</scale><uri>model://amsr_vtol/meshes/gripper_hand1_v1.stl</uri></mesh></geometry>
+        <material><ambient>0.6 0.6 0.62 1</ambient><diffuse>0.7 0.7 0.72 1</diffuse></material>
+      </visual>
+      
+      <visual name="gripper_hand4_visual">
+        <pose>-0.03 0 0 0 0 0</pose> 
+        <geometry><mesh><scale>0.001 0.001 0.001</scale><uri>model://amsr_vtol/meshes/gripper_hand4.stl</uri></mesh></geometry>
+        <material><ambient>0.6 0.6 0.62 1</ambient><diffuse>0.7 0.7 0.72 1</diffuse></material>
+      </visual>
+
+      <collision name="right_hand_collision_arm1">
+        <pose>0.03 -0.02 -0.04 0.4 0 0</pose> 
+        <geometry><box><size>0.02 0.01 0.06</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="right_hand_collision_arm2">
+        <pose>-0.03 -0.02 -0.04 0.4 0 0</pose> 
+        <geometry><box><size>0.02 0.01 0.06</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="right_hand_collision_leg1">
+        <pose>0.03 0.01 -0.075 0 0 0</pose> 
+        <geometry><box><size>0.02 0.04 0.01</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+      <collision name="right_hand_collision_leg2">
+        <pose>-0.03 0.01 -0.075 0 0 0</pose> 
+        <geometry><box><size>0.02 0.04 0.01</size></box></geometry>
+        <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface>
+      </collision>
+    </link>
+
+    <joint name="right_hand_joint" type="revolute">
+      <parent>gripper_body</parent>
+      <child>right_hand_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit><lower>-1.57</lower><upper>1.57</upper><effort>5.0</effort><velocity>1.5</velocity></limit>
+      </axis>
+    </joint>
+
+
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>gripper_z_rotation_joint</joint_name>
+      <sub_topic>servo_4</sub_topic>
+      <p_gain>10.0</p_gain> <i_gain>0.0</i_gain> <d_gain>0.1</d_gain>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>left_hand_joint</joint_name>
+      <sub_topic>servo_5</sub_topic>
+      <p_gain>10.0</p_gain> <i_gain>0.0</i_gain> <d_gain>0.1</d_gain>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>right_hand_joint</joint_name>
+      <sub_topic>servo_6</sub_topic>
+      <p_gain>10.0</p_gain> <i_gain>0.0</i_gain> <d_gain>0.1</d_gain>
+    </plugin>
+    
+    
 
   </model>
 </sdf>

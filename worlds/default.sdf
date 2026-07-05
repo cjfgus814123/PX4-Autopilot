@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <sdf version="1.9">
   <world name="default">
     <physics type="ode">
@@ -41,9 +41,9 @@
             </plane>
           </geometry>
           <material>
-            <ambient>0.15 0.15 0.15 1</ambient>
-            <diffuse>0.15 0.15 0.15 1</diffuse>
-            <specular>0.15 0.15 0.15 1</specular>
+            <ambient>1.0 1.0 1.0 1</ambient>
+            <diffuse>1.0 1.0 1.0 1</diffuse>
+            <specular>1.0 1.0 1.0 1</specular>
           </material>
         </visual>
         <pose>0 0 0 0 -0 0</pose>
